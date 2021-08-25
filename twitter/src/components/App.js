@@ -11,21 +11,36 @@ function App() {
     AuthService.onAuthStateChanged((user) => {
       if (user) {
         setisLoggedIn(true);
-        setuserObj(user);
+        setuserObj({
+          displayName: user.displayName,
+          uid: user.uid,
+          updateProfile: (arg) => user.updateProfile(arg),
+        });
       } else {
         setisLoggedIn(false);
+        setuserObj(null);
       }
       setinit(true);
     });
   }, []);
-  const LogOutHandler = () => {
-    firebaseInstance.auth.signup();
-    setisLoggedIn(false);
+
+  const refreshUser = () => {
+    const user = AuthService.currentUser;
+    setuserObj({
+      displayName: user.displayName,
+      uid: user.uid,
+      updateProfile: (arg) => user.updateProfile(arg),
+    });
   };
+
   return (
     <div className="App">
       {init ? (
-        <AppRouter userObj={userObj} isLoggedIn={isLoggedIn} />
+        <AppRouter
+          refreshUser={refreshUser}
+          userObj={userObj}
+          isLoggedIn={isLoggedIn}
+        />
       ) : (
         "initializing.."
       )}

@@ -3,10 +3,11 @@ import { useHistory } from "react-router-dom";
 import { AuthService, dbService } from "../firebase";
 import Tweet from "../components/Tweet";
 
-function Profile({ isLoggedIn, userObj }) {
+function Profile({ isLoggedIn, userObj, refreshUser }) {
   const logOutHandler = () => {
     AuthService.signOut();
     window.location.replace("/");
+    refreshUser();
   };
 
   /* const [gettweet, setgettweet] = useState("");
@@ -44,9 +45,10 @@ function Profile({ isLoggedIn, userObj }) {
       });
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    userObj.updateProfile({ displayName: changeEmail });
+    await userObj.updateProfile({ displayName: changeEmail });
+    refreshUser();
   };
 
   useEffect(() => {

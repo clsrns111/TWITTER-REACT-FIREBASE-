@@ -11,7 +11,7 @@ import Home from "../routes/Home";
 import Profile from "../routes/Profile";
 import Navigation from "./Navigation";
 
-export default ({ isLoggedIn, userObj }) => {
+export default ({ isLoggedIn, userObj, refreshUser }) => {
   return (
     <>
       <Router>
@@ -23,7 +23,11 @@ export default ({ isLoggedIn, userObj }) => {
               <Home userObj={userObj} />
             </Route>
             <Route exact path="/profile">
-              <Profile userObj={userObj} isLoggedIn={isLoggedIn} />
+              <Profile
+                refreshUser={refreshUser}
+                userObj={userObj}
+                isLoggedIn={isLoggedIn}
+              />
             </Route>
             <Redirect from="*" to="/" />
           </>
